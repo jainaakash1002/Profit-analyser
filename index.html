@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profit Analyser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td input {
+            width: 90%;
+            padding: 8px;
+            margin: 4px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        td input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        td span.result {
+            font-weight: bold;
+            color: #333;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        tfoot tr {
+            font-weight: bold;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <h3>Profit Analyser</h3>
+    <button onclick="addRow()">+ Add New Row</button>
+    <table id="inputTable">
+        <thead>
+            <tr>
+                <th>Profit/Loss</th>
+                <th>Brokerage</th>
+                <th>Net Profit/Loss</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <td><input type="number" class="c1" value="0" oninput="calculate()"></td>
+                <td><input type="number" class="c2" value="0" oninput="calculate()"></td>
+                <td><span class="result">0</span></td>
+            </tr>
+            <tr>
+                <td><input type="number" class="c1" value="0" oninput="calculate()"></td>
+                <td><input type="number" class="c2" value="0" oninput="calculate()"></td>
+                <td><span class="result">0</span></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><b>Profit/Loss Total:</b></td>
+                <td><b>Brokerage Total:</b></td>
+                <td><b>Net Profit/Loss Total:</b></td>
+            </tr>
+            <tr>
+                <td><span id="totalC1">0</span></td>
+                <td><span id="totalC2">0</span></td>
+                <td><span id="totalResult">0</span></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <script>
+        function calculate() {
+            let totalC1 = 0;
+            let totalC2 = 0;
+            let totalResult = 0;
+            const rows = document.querySelectorAll('#inputTable tbody tr');
+
+            rows.forEach(row => {
+                const c1 = parseFloat(row.querySelector('.c1').value) || 0;
+                const c2 = parseFloat(row.querySelector('.c2').value) || 0;
+                const result = c1 - c2;
+
+                row.querySelector('.result').textContent = result;
+
+                totalC1 += c1;
+                totalC2 += c2;
+                totalResult += result;
+            });
+
+            document.getElementById('totalC1').textContent = totalC1.toFixed(2);
+            document.getElementById('totalC2').textContent = totalC2.toFixed(2);
+            document.getElementById('totalResult').textContent = totalResult.toFixed(2);
+        }
+
+        function addRow() {
+            const tableBody = document.querySelector('#inputTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="number" class="c1" value="0" oninput="calculate()"></td>
+                <td><input type="number" class="c2" value="0" oninput="calculate()"></td>
+                <td><span class="result">0</span></td>
+            `;
+            tableBody.appendChild(newRow);
+            calculate();
+        }
+    </script>
+</body>
+</html>
